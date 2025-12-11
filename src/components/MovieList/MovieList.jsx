@@ -1,12 +1,12 @@
-import { movieImages } from './moviesImages';
+import { movieImages } from 'src/moviesImages.js';
+import MovieCard from './MovieCard.jsx';
 
 function MoviesList() {
   return (
     <section className="movies-list">
       {movieImages.map((movie) => (
-        <img
+        <MovieCard
           key={movie.id}
-          className="movies-list__poster"
           src={movie.src}
           alt={movie.alt}
         />
