@@ -1,4 +1,4 @@
-function Input({ placeholder, icon, type = 'text', value, onChange }) {
+function Input({ placeholder, icon, type = 'text', value, onChange, onKeyDown }) {
   return (
     <div className={`input ${icon ? 'input_with-icon' : ''}`}>
       {icon && <span className="input__icon">{icon}</span>}
@@ -8,6 +8,7 @@ function Input({ placeholder, icon, type = 'text', value, onChange }) {
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        onKeyDown={onKeyDown}
       />
     </div>
   );

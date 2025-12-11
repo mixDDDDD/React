@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import Input from './Input.jsx';
-import Button from './Button.jsx';
+import Input from './Input.js';
+import Button from './Button.js';
 
 function Search({ onSearch }) {
   const [value, setValue] = useState('');
@@ -12,12 +12,11 @@ function Search({ onSearch }) {
   const handleSearch = () => {
     const trimmed = value.trim();
     if (!trimmed) {
-      // здесь можно показать ошибку или просто ничего не делать
       return;
     }
 
     onSearch(trimmed);
-    setValue(''); // очистка поля после успешного поиска
+    setValue('');
   };
 
   const handleKeyDown = (event) => {
