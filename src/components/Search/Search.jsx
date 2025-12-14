@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import Input from './Input.js';
-import Button from './Button.js';
+import Input from '../Input/Input.jsx';
+import Button from '../Button/Button.jsx';
 import styles from './Search.module.css';
 
 function Search({ onSearch }) {

@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import Layout from './Layout.jsx';
-import Title from './Title.jsx';
-import Paragraph from './Paragraph.jsx';
-import Input from './Input.jsx';
-import Button from './Button.jsx';
+import Layout from './components/Layout/Layout.jsx';
+import Title from './components/Title/Title.jsx';
+import Paragraph from './components/Paragraph/Paragraph.jsx';
+import Input from './components/Input/Input.jsx';
+import Button from './components/Button/Button.jsx';
 import styles from './LoginPage.module.css';
 
 function LoginPage() {

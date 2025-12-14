@@ -1,5 +1,5 @@
 import { movieImages } from 'src/moviesImages.js';
-import MovieCard from './MovieCard.jsx';
+import MovieCard from './components/MovieCard/MovieCard.jsx';
 import styles from './MovieList.module.css';
 
 function MoviesList() {

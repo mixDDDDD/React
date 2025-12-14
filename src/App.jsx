@@ -3,6 +3,7 @@ import Title from './components/Title/Title.jsx';
 import Paragraph from './components/Paragraph/Paragraph.jsx';
 import Search from './components/Search/Search.jsx';
 import MoviesList from './components/MovieList/MovieCard.jsx';
+import styles from './components/LoginPage/LoginPage.module.css';
 
 function App() {
   const handleSearch = (query) => {
