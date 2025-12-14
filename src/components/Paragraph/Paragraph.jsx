@@ -1,4 +1,4 @@
-import styles from './Paragraph.css';
+import styles from './Paragraph.module.css';
 
 function Paragraph({ children, size = 'medium' }) {
   const className =
