@@ -4,6 +4,7 @@ import Title from './Title.jsx';
 import Paragraph from './Paragraph.jsx';
 import Input from './Input.jsx';
 import Button from './Button.jsx';
+import styles from './LoginPage.module.css';
 
 function LoginPage() {
   const [name, setName] = useState('');
@@ -18,7 +19,7 @@ function LoginPage() {
 
   return (
     <Layout>
-      <section className="page">
+      <section className={styles.page}>
         <Title>Вход</Title>
         <Paragraph size="medium">Ваше имя</Paragraph>
 

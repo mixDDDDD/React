@@ -1,9 +1,10 @@
 import { movieImages } from 'src/moviesImages.js';
 import MovieCard from './MovieCard.jsx';
+import styles from './MovieList.module.css';
 
 function MoviesList() {
   return (
-    <section className="movies-list">
+    <section className={styles.moviesList}>
       {movieImages.map((movie) => (
         <MovieCard
           key={movie.id}

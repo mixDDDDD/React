@@ -11,7 +11,7 @@ function App() {
 
   return (
     <Layout>
-      <section className="page">
+      <section className={styles.page}>
         <Title>Поиск</Title>
         <Paragraph size="medium">
           Введите название фильма, сериала или мультфильма для поиска и добавления в избранное.
