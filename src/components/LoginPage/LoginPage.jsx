@@ -1,39 +1,63 @@
 import { useState } from 'react';
-import Layout from './components/Layout/Layout.jsx';
-import Title from './components/Title/Title.jsx';
-import Paragraph from './components/Paragraph/Paragraph.jsx';
-import Input from './components/Input/Input.jsx';
-import Button from './components/Button/Button.jsx';
+import Input from '../Input/Input.jsx';
+import Button from '../Button/Button.jsx';
 import styles from './LoginPage.module.css';
 
-function LoginPage() {
+const LS_KEY = 'profiles';
+
+function LoginPage({ onLoginSuccess }) {
   const [name, setName] = useState('');
 
-  const handleChange = (event) => {
-    setName(event.target.value);
-  };
+  const handleChange = (e) => setName(e.target.value);
 
   const handleLoginClick = () => {
-    console.log('Войти в профиль с именем:', name);
+    const trimmed = name.trim();
+    if (trimmed.length < 2) {
+      alert('Имя должно быть не короче 2 символов');
+      return;
+    }
+
+    let profiles = [];
+    try {
+      const raw = localStorage.getItem(LS_KEY);
+      if (raw) profiles = JSON.parse(raw);
+    } catch (e) {
+      console.error('Ошибка чтения профилей', e);
+    }
+
+    profiles = profiles.map(p =>
+      p.name === trimmed
+        ? { ...p, isLoggedIn: true }
+        : { ...p, isLoggedIn: false }
+    );
+    if (!profiles.some(p => p.name === trimmed)) {
+      profiles.push({ name: trimmed, isLoggedIn: true });
+    }
+
+    try {
+      localStorage.setItem(LS_KEY, JSON.stringify(profiles));
+    } catch (e) {
+      console.error('Ошибка записи профилей', e);
+    }
+
+    alert('Вы успешно вошли');
+    onLoginSuccess?.(trimmed);
   };
 
   return (
-    <Layout>
-      <section className={styles.page}>
-        <Title>Вход</Title>
-        <Paragraph size="medium">Ваше имя</Paragraph>
+    <section className={styles.page}>
+      <h1 className={styles.title}>Вход</h1>
 
-        <Input
-          placeholder="Ваше имя"
-          value={name}
-          onChange={handleChange}
-        />
+      <Input
+        placeholder="Ваше имя"
+        value={name}
+        onChange={handleChange}
+      />
 
-        <Button onClick={handleLoginClick}>
-          Войти в профиль
-        </Button>
-      </section>
-    </Layout>
+      <Button onClick={handleLoginClick}>
+        Войти в профиль
+      </Button>
+    </section>
   );
 }
 
