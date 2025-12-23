@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useUser } from './context/UserContext.jsx';
+import { useUser } from '../../context/UserContext.jsx';
 import Input from '../Input/Input.jsx';
 import Button from '../Button/Button.jsx';
 import styles from '../LoginPage.module.css';
