@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useUser } from './context/UserContext.jsx';
 import Layout from './components/Layout/Layout.jsx';
 import Title from './components/Title/Title.jsx';
 import Paragraph from './components/Paragraph/Paragraph.jsx';
@@ -6,56 +7,22 @@ import Search from './components/Search/Search.jsx';
 import MoviesList from './components/MovieList/MovieList.jsx';
 import LoginPage from './components/LoginPage/LoginPage.jsx';
 
-const LS_KEY = 'profiles';
-
 function App() {
+  const { user, logout } = useUser();
   const [screen, setScreen] = useState('search');
-  const [currentUser, setCurrentUser] = useState(null);
-
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem(LS_KEY);
-      if (!raw) return;
-      const profiles = JSON.parse(raw);
-      const logged = profiles.find(p => p.isLoggedIn);
-      if (logged) {
-        setCurrentUser({ name: logged.name });
-      }
-    } catch (e) {
-      console.error('Ошибка чтения профилей', e);
-    }
-  }, []);
 
   const handleSearch = (query) => {
     console.log('Ищем фильм:', query);
   };
 
-  const handleLogout = () => {
-    try {
-      const raw = localStorage.getItem(LS_KEY);
-      if (raw) {
-        const profiles = JSON.parse(raw).map(p => ({
-          ...p,
-          isLoggedIn: false,
-        }));
-        localStorage.setItem(LS_KEY, JSON.stringify(profiles));
-      }
-    } catch (e) {
-      console.error('Ошибка сброса профилей', e);
-    }
-    setCurrentUser(null);
-    setScreen('search');
-  };
-
-  const handleLoginSuccess = (name) => {
-    setCurrentUser({ name });
+  const handleLoginSuccess = () => {
     setScreen('search');
   };
 
   return (
     <Layout
-      userName={currentUser?.name}
-      onLogout={handleLogout}
+      userName={user?.name}
+      onLogout={logout}
       onLoginClick={() => setScreen('login')}
     >
       {screen === 'search' && (

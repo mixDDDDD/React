@@ -1,12 +1,14 @@
 import { useState } from 'react';
+import { useUser } from './context/UserContext.jsx';
 import Input from '../Input/Input.jsx';
 import Button from '../Button/Button.jsx';
-import styles from './LoginPage.module.css';
+import styles from '../LoginPage.module.css';
 
 const LS_KEY = 'profiles';
 
 function LoginPage({ onLoginSuccess }) {
   const [name, setName] = useState('');
+  const { setUser } = useUser();
 
   const handleChange = (e) => setName(e.target.value);
 
@@ -25,12 +27,13 @@ function LoginPage({ onLoginSuccess }) {
       console.error('Ошибка чтения профилей', e);
     }
 
-    profiles = profiles.map(p =>
+    profiles = profiles.map((p) =>
       p.name === trimmed
         ? { ...p, isLoggedIn: true }
         : { ...p, isLoggedIn: false }
     );
-    if (!profiles.some(p => p.name === trimmed)) {
+
+    if (!profiles.some((p) => p.name === trimmed)) {
       profiles.push({ name: trimmed, isLoggedIn: true });
     }
 
@@ -40,8 +43,9 @@ function LoginPage({ onLoginSuccess }) {
       console.error('Ошибка записи профилей', e);
     }
 
+    setUser({ name: trimmed });      // записываем в контекст
     alert('Вы успешно вошли');
-    onLoginSuccess?.(trimmed);
+    onLoginSuccess?.();
   };
 
   return (
