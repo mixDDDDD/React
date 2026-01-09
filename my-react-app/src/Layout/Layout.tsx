@@ -1,21 +1,55 @@
-import { ReactNode } from 'react';
+import { FunctionComponent } from 'react';
+import { Outlet, NavLink } from 'react-router-dom';
 import styles from './Layout.module.css';
 
 type LayoutProps = {
-  children: ReactNode;
   userName?: string;
   onLogout?: () => void;
   onLoginClick?: () => void;
 };
 
-function Layout({ children, userName, onLogout, onLoginClick }: LayoutProps) {
+type NavData = {
+  isActive: boolean;
+  isPending?: boolean;
+};
+
+const Layout: FunctionComponent<LayoutProps> = ({ 
+  userName, 
+  onLogout, 
+  onLoginClick 
+}) => {
   const isLoggedIn = Boolean(userName);
+
+  const navClassName = ({ isActive }: NavData) =>
+  `${styles.link} ${isActive ? styles.active : ''}`;
 
   return (
     <div className={styles.layout}>
-      {/* ... твой header как есть ... */}
       <header className={styles.header}>
-        {/* логотип и меню */}
+        <div>
+          <nav className={styles.nav}>
+            <ul>
+              <li>
+                <NavLink to="/" className={navClassName}>
+                  Home
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/favorites" className={navClassName}>
+                  Favorites
+                </NavLink>
+              </li>
+              {!isLoggedIn ? (
+                <li>
+                  <NavLink to="/login" className={navClassName}>
+                    Login
+                  </NavLink>
+                </li>
+              ) : null}
+            </ul>
+          </nav>
+        </div>
+
         <div className={styles['header__right']}>
           {isLoggedIn ? (
             <>
@@ -37,15 +71,14 @@ function Layout({ children, userName, onLogout, onLoginClick }: LayoutProps) {
               Войти
             </button>
           )}
-          {/* иконка */}
         </div>
       </header>
 
       <main className={styles['layout__content']}>
-        {children}
+        <Outlet />
       </main>
     </div>
   );
-}
+};
 
 export default Layout;
