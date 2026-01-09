@@ -1,17 +1,16 @@
-// main.tsx
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { useState, useCallback } from 'react';
 import Layout from './Layout/Layout';
+import { movieImages } from './moviesImages';
 import Title from './components/Title/Title';
 import Paragraph from './components/Paragraph/Paragraph';
 import Search from './components/Search/Search';
 import MovieList from './components/MovieList/MovieList';
 import LoginPage from './components/LoginPage/LoginPage';
-import { movieImages } from './moviesImages';
-import { useUser } from './context/UserContext'; // ваш UserContext
+import Movie from './pages/Movie';
+import Favorites from './pages/Favorites';
+import { UserProvider } from './context/UserContext';
 
-// Главная страница (бывший screen='search')
 const Home = () => {
   const handleSearch = (query: string) => {
     console.log('Ищем фильм:', query);
@@ -29,47 +28,25 @@ const Home = () => {
   );
 };
 
-// Страница логина
-const LoginPageRoute = () => {
-  const handleLoginSuccess = () => {
-    // логика после логина
-  };
-
-  return <LoginPage onLoginSuccess={handleLoginSuccess} />;
-};
-
-// Страница фильма
-const Movie = () => <div>Movie Page</div>;
-
-// Избранное
-const Favorites = () => <div>Favorites Page</div>;
-
 function App() {
-  const { user, logout } = useUser();
-  const handleLoginClick = useCallback(() => {
-    // переход на /login происходит автоматически через NavLink
-  }, []);
-
-  const router = createBrowserRouter([
-    {
-      path: '/',
-      element: (
-        <Layout
-          userName={user?.name}
-          onLogout={logout}
-          onLoginClick={handleLoginClick}
-        />
-      ),
-      children: [
-        { index: true, element: <Home /> },
-        { path: 'login', element: <LoginPageRoute /> },
-        { path: 'movie/:id', element: <Movie /> },
-        { path: 'favorites', element: <Favorites /> },
-      ],
-    },
-  ]);
-
-  return <RouterProvider router={router} />;
+  return (
+    <UserProvider>
+      <RouterProvider 
+        router={createBrowserRouter([
+          {
+            path: '/',
+            element: <Layout />,
+            children: [
+              { index: true, element: <Home /> },
+              { path: 'login', element: <LoginPage /> },
+              { path: 'movie/:id', element: <Movie /> },
+              { path: 'favorites', element: <Favorites /> },
+            ],
+          },
+        ])}
+      />
+    </UserProvider>
+  );
 }
 
 ReactDOM.createRoot(document.getElementById('root')!).render(<App />);

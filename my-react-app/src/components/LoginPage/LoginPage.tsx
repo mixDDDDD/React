@@ -1,4 +1,5 @@
 import { useState, ChangeEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../context/UserContext';
 import Input from '../Input/Input';
 import Button from '../Button/Button';
@@ -13,6 +14,7 @@ type LoginPageProps = {
 export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
   const [name, setName] = useState('');
   const { setUser } = useUser();
+  const navigate = useNavigate();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -52,7 +54,10 @@ export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
 
     setUser({ name: trimmed });
     alert('Вы успешно вошли');
+    
     onLoginSuccess?.();
+    
+    navigate('/');
   };
 
   return (
