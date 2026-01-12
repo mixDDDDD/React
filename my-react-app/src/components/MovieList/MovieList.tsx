@@ -1,28 +1,23 @@
-import MovieCard from '../MovieCard/MovieCard.js';
+import { Movie } from '../../types/movie';
+import MovieCard from '../MovieCard/MovieCard';
 import styles from './MovieList.module.css';
-
-type Movie = {
-  id: number;
-  src: string;
-  alt: string;
-};
 
 type MoviesListProps = {
   movies: Movie[];
 };
 
-function MoviesList({ movies }: MoviesListProps) {
+function MovieList({ movies }: MoviesListProps) {
   return (
     <section className={styles.moviesList}>
       {movies.map((movie) => (
         <MovieCard
           key={movie.id}
-          src={movie.src}
-          alt={movie.alt}
+          src={movie.image}
+          alt={movie.title}
         />
       ))}
     </section>
   );
 }
 
-export default MoviesList;
+export default MovieList;

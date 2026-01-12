@@ -1,6 +1,7 @@
-import { useParams } from 'react-router-dom';
+import { useLoaderData } from 'react-router-dom';
 
 export default function Movie() {
-  const { id } = useParams();
-  return <h1>Movie ID: {id}</h1>;
+  const movieData = useLoaderData();
+  console.log('Movie data:', movieData);
+  return <div>{JSON.stringify(movieData, null, 2)}</div>;
 }

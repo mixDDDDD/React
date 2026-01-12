@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Layout from './Layout/Layout';
-import { movieImages } from './moviesImages';
+import { movieImages } from './data/moviesImages';
 import Title from './components/Title/Title';
 import Paragraph from './components/Paragraph/Paragraph';
 import Search from './components/Search/Search';
@@ -39,7 +39,18 @@ function App() {
             children: [
               { index: true, element: <Home /> },
               { path: 'login', element: <LoginPage /> },
-              { path: 'movie/:id', element: <Movie /> },
+              { 
+                path: 'movie/:id', 
+                element: <Movie />,
+                loader: async (args) => {
+                  const { params } = args;
+                  const response = await fetch(`https://search.imdbot.workers.dev/?t=${params.id}`);
+                  if (!response.ok) {
+                    throw new Response('Фильм не найден', { status: 404 });
+                  }
+                  return response.json();
+                }
+              },
               { path: 'favorites', element: <Favorites /> },
             ],
           },
