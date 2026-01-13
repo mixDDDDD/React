@@ -7,13 +7,13 @@ import { movieImages } from '../data/moviesImages';
 import { MovieModel } from '../types/movie';
 
 export default function Home() {
-  const [movies, setMovies] = useState<MovieModel[]>(movieImages);
+  const [movies, setMovies] = useState<MovieModel[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
 
   const handleSearch = async (query: string) => {
     if (!query.trim()) {
-      setMovies(movieImages);
+      setMovies([]);
       setError('');
       return;
     }

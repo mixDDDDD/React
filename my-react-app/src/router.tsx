@@ -12,7 +12,21 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: 'login', element: <Login /> },
-      { path: 'movie/:id', element: <Movie /> },
+      {
+        path: 'movie/:id',
+        element: <Movie />,
+        loader: async ({ params }) => {
+          const response = await fetch(
+            `https://search.imdbot.workers.dev/?t=${params.id}`
+          );
+
+          if (!response.ok) {
+            throw new Response('Фильм не найден', { status: 404 });
+          }
+
+          return response.json();
+        },
+      },
       { path: 'favorites', element: <Favorites /> },
     ],
   },
