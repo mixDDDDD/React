@@ -3,7 +3,6 @@ import Title from '../components/Title/Title';
 import Paragraph from '../components/Paragraph/Paragraph';
 import Search from '../components/Search/Search';
 import MovieList from '../components/MovieList/MovieList';
-import { movieImages } from '../data/moviesImages';
 import { MovieModel } from '../types/movie';
 
 export default function Home() {

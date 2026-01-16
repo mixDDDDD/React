@@ -1,4 +1,3 @@
-// src/context/UserContext.tsx
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 
 const LS_KEY = 'profiles';
@@ -23,13 +22,13 @@ export function UserProvider({ children }: { children: ReactNode }) {
       const raw = localStorage.getItem(LS_KEY);
       if (!raw) return;
 
-      const profiles: Array<{ name: string; isLoggedIn?: boolean }> = JSON.parse(raw);
-      const logged = profiles.find((p) => p.isLoggedIn);
+      const profiles = JSON.parse(raw);
+      const logged = profiles.find((p: any) => p.isLoggedIn);
       if (logged) {
         setUser({ name: logged.name });
       }
     } catch (e) {
-      console.error('Ошибка чтения профилей из localStorage', e);
+      console.error('Ошибка чтения профилей', e);
     }
   }, []);
 
@@ -37,12 +36,10 @@ export function UserProvider({ children }: { children: ReactNode }) {
     try {
       const raw = localStorage.getItem(LS_KEY);
       if (raw) {
-        const profiles: Array<{ name: string; isLoggedIn?: boolean }> = JSON.parse(raw).map(
-          (p: any) => ({
-            ...p,
-            isLoggedIn: false,
-          }),
-        );
+        const profiles = JSON.parse(raw).map((p: any) => ({
+          ...p,
+          isLoggedIn: false,
+        }));
         localStorage.setItem(LS_KEY, JSON.stringify(profiles));
       }
     } catch (e) {

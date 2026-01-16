@@ -4,30 +4,38 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Movie from './pages/Movie';
 import Favorites from './pages/Favorites';
+import ProtectedRoute from './components/ProtectedRoute';
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <Layout />,
     children: [
-      { index: true, element: <Home /> },
       { path: 'login', element: <Login /> },
       {
-        path: 'movie/:id',
-        element: <Movie />,
-        loader: async ({ params }) => {
-          const response = await fetch(
-            `https://search.imdbot.workers.dev/?t=${params.id}`
-          );
+        element: <ProtectedRoute />,
+        children: [
+          { index: true, element: <Home /> },
 
-          if (!response.ok) {
-            throw new Response('Фильм не найден', { status: 404 });
-          }
+          {
+            path: 'movie/:id',
+            element: <Movie />,
+            loader: async ({ params }) => {
+              const response = await fetch(
+                `https://search.imdbot.workers.dev/?t=${params.id}`
+              );
 
-          return response.json();
-        },
+              if (!response.ok) {
+                throw new Response('Фильм не найден', { status: 404 });
+              }
+
+              return response.json();
+            },
+          },
+
+          { path: 'favorites', element: <Favorites /> },
+        ],
       },
-      { path: 'favorites', element: <Favorites /> },
     ],
   },
 ]);

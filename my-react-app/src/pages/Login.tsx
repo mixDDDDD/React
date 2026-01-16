@@ -1,3 +1,13 @@
+import { Navigate } from 'react-router-dom';
+import LoginPage from '../components/LoginPage/LoginPage';
+import { useUser } from '../context/UserContext';
+
 export default function Login() {
-  return <h1>Login Page</h1>;
+  const { user } = useUser();
+
+  if (user?.name) {
+    return <Navigate to="/" replace />;
+  }
+
+  return <LoginPage />;
 }
