@@ -3,9 +3,8 @@ import { useUser } from '../context/UserContext';
 
 export default function ProtectedRoute() {
   const { user } = useUser();
-  const isAuth = Boolean(user);
 
-  if (!isAuth) {
+  if (!user?.name) {
     return <Navigate to="/login" replace />;
   }
 

@@ -22,6 +22,7 @@ export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
 
   const handleLoginClick = () => {
     const trimmed = name.trim();
+
     if (trimmed.length < 2) {
       alert('Имя должно быть не короче 2 символов');
       return;
@@ -31,7 +32,9 @@ export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
 
     try {
       const raw = localStorage.getItem(LS_KEY);
-      if (raw) profiles = JSON.parse(raw);
+      if (raw) {
+        profiles = JSON.parse(raw);
+      }
     } catch (e) {
       console.error('Ошибка чтения профилей', e);
     }
@@ -53,21 +56,22 @@ export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
     }
 
     setUser({ name: trimmed });
-    alert('Вы успешно вошли');
-    
+
     onLoginSuccess?.();
-    
-    navigate('/');
+
+    navigate('/', { replace: true });
   };
 
   return (
     <section className={styles.page}>
       <h1 className={styles.title}>Вход</h1>
+
       <Input
         placeholder="Ваше имя"
         value={name}
         onChange={handleChange}
       />
+
       <Button onClick={handleLoginClick}>
         Войти в профиль
       </Button>
