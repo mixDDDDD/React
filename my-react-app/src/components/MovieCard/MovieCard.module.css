@@ -1,0 +1,18 @@
+.card {
+    position: relative;
+}
+
+.favoriteBtn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: transparent;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+.favoriteBtn.active {
+    opacity: 1;
+}

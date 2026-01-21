@@ -1,19 +1,18 @@
-import { Movie } from '../../types/movie';
 import MovieCard from '../MovieCard/MovieCard';
+import { MovieModel } from '../../types/movie';
 import styles from './MovieList.module.css';
 
-type MoviesListProps = {
-  movies: Movie[];
+type Props = {
+  movies: MovieModel[];
 };
 
-function MovieList({ movies }: MoviesListProps) {
+function MovieList({ movies }: Props) {
   return (
     <section className={styles.moviesList}>
       {movies.map((movie) => (
         <MovieCard
           key={movie.id}
-          src={movie.image}
-          alt={movie.title}
+          movie={movie}
         />
       ))}
     </section>

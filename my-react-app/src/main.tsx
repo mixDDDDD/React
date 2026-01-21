@@ -1,10 +1,14 @@
 import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
 import { RouterProvider } from 'react-router-dom';
+import { store } from './store';
 import { router } from './router';
 import { UserProvider } from './context/UserContext';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <UserProvider>
-    <RouterProvider router={router} />
-  </UserProvider>
+  <Provider store={store}>
+    <UserProvider>
+      <RouterProvider router={router} />
+    </UserProvider>
+  </Provider>
 );

@@ -1,6 +1,6 @@
-import { Movie } from '../types/movie';
+import { MovieModel } from '../types/movie';
 
-export const movieImages: Movie[] = [
+export const movieImages: MovieModel[] = [
   { id: 1, image: '/public/images/Card-film-1.png', title: 'Black Widow' },
   { id: 2, image: '/public/images/Card-film-2.png', title: 'Shang Chi' },
   { id: 3, image: '/public/images/Card-film-3.png', title: 'Loki' },

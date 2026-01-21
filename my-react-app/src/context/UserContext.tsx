@@ -1,4 +1,12 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+} from 'react';
+import { useAppDispatch } from '../store/hooks';
+import { setFavorites } from '../store/favoritesSlice';
 
 const LS_KEY = 'profiles';
 
@@ -12,25 +20,48 @@ type UserContextValue = {
   logout: () => void;
 };
 
-const UserContext = createContext<UserContextValue | undefined>(undefined);
+const UserContext = createContext<UserContextValue | undefined>(
+  undefined
+);
 
-export function UserProvider({ children }: { children: ReactNode }) {
+const getFavoritesKey = (username: string) =>
+  `favorites:${username}`;
+
+export function UserProvider({
+  children,
+}: {
+  children: ReactNode;
+}) {
   const [user, setUser] = useState<User | null>(null);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     try {
       const raw = localStorage.getItem(LS_KEY);
       if (!raw) return;
 
-      const profiles = JSON.parse(raw);
-      const logged = profiles.find((p: any) => p.isLoggedIn);
-      if (logged) {
+      const profiles: Array<{
+        name: string;
+        isLoggedIn?: boolean;
+      }> = JSON.parse(raw);
+
+      const logged = profiles.find((p) => p.isLoggedIn);
+
+      if (logged?.name) {
         setUser({ name: logged.name });
+
+        const favRaw = localStorage.getItem(
+          getFavoritesKey(logged.name)
+        );
+
+        dispatch(
+          setFavorites(favRaw ? JSON.parse(favRaw) : [])
+        );
       }
     } catch (e) {
       console.error('Ошибка чтения профилей', e);
     }
-  }, []);
+  }, [dispatch]);
 
   const logout = () => {
     try {
@@ -40,11 +71,15 @@ export function UserProvider({ children }: { children: ReactNode }) {
           ...p,
           isLoggedIn: false,
         }));
-        localStorage.setItem(LS_KEY, JSON.stringify(profiles));
+        localStorage.setItem(
+          LS_KEY,
+          JSON.stringify(profiles)
+        );
       }
     } catch (e) {
       console.error('Ошибка сброса профилей', e);
     }
+
     setUser(null);
   };
 
@@ -58,7 +93,9 @@ export function UserProvider({ children }: { children: ReactNode }) {
 export function useUser(): UserContextValue {
   const ctx = useContext(UserContext);
   if (!ctx) {
-    throw new Error('useUser must be used within UserProvider');
+    throw new Error(
+      'useUser must be used within UserProvider'
+    );
   }
   return ctx;
 }
