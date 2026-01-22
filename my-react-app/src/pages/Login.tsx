@@ -1,16 +1,19 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import LoginPage from '../components/LoginPage/LoginPage';
-import { useUser } from '../context/UserContext';
+import { useAppSelector } from '../store/hooks';
 
 export default function Login() {
-  const { user } = useUser();
+  const userName = useAppSelector(
+    (state) => state.user.name
+  );
+
   const location = useLocation();
 
   const from =
     (location.state as { from?: Location })?.from
       ?.pathname || '/';
 
-  if (user?.name) {
+  if (userName) {
     return <Navigate to={from} replace />;
   }
 
