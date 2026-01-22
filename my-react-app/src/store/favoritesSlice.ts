@@ -19,21 +19,16 @@ const favoritesSlice = createSlice({
     setFavorites(state, action: PayloadAction<MovieModel[]>) {
       state.items = action.payload;
     },
-
     addFavorite(state, action: PayloadAction<MovieModel>) {
-      const exists = state.items.some(
-        (movie) => movie.id === action.payload.id
-      );
-
-      if (!exists) {
-        state.items.push(action.payload);
-      }
+      state.items.push(action.payload);
     },
-
     removeFavorite(state, action: PayloadAction<string | number>) {
       state.items = state.items.filter(
-        (movie) => movie.id !== action.payload
+        (m) => m.id !== action.payload
       );
+    },
+    clearFavorites(state) {
+      state.items = [];
     },
   },
 });
@@ -42,6 +37,7 @@ export const {
   setFavorites,
   addFavorite,
   removeFavorite,
+  clearFavorites,
 } = favoritesSlice.actions;
 
 export default favoritesSlice.reducer;
