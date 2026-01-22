@@ -1,13 +1,48 @@
 import styles from './MovieCard.module.css';
+import { MovieModel } from '../../types/movie';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import {
+  addFavorite,
+  removeFavorite,
+} from '../../store/favoritesSlice';
 
 type MovieCardProps = {
-  src: string
-  alt: string
-}
+  movie: MovieModel;
+};
 
-function MovieCard({ src, alt }: MovieCardProps) {
+function MovieCard({ movie }: MovieCardProps) {
+  const dispatch = useAppDispatch();
+  const favorites = useAppSelector(
+    (state) => state.favorites.items
+  );
+
+  const isFavorite = favorites.some(
+    (item) => item.id === movie.id
+  );
+
+  const handleToggleFavorite = () => {
+    if (isFavorite) {
+      dispatch(removeFavorite(movie.id));
+    } else {
+      dispatch(addFavorite(movie));
+    }
+  };
+
   return (
-    <img className={styles['movies-list__poster']} src={src} alt={alt} />
+    <div className={styles.card}>
+      <img
+        src={movie.image}
+        alt={movie.title}
+        className={styles.poster}
+      />
+
+      <button
+        onClick={handleToggleFavorite}
+        className={styles.favoriteBtn}
+      >
+        {isFavorite ? '★' : '☆'}
+      </button>
+    </div>
   );
 }
 

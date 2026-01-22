@@ -1,19 +1,20 @@
 import { useState, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../context/UserContext';
+import { useAppDispatch } from '../../store/hooks';
+import { setFavorites } from '../../store/favoritesSlice';
 import Input from '../Input/Input';
 import Button from '../Button/Button';
 import styles from './LoginPage.module.css';
 
 const LS_KEY = 'profiles';
 
-type LoginPageProps = {
-  onLoginSuccess?: () => void;
-};
+const getFavoritesKey = (username: string) => `favorites:${username}`;
 
-export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
+export default function LoginPage() {
   const [name, setName] = useState('');
   const { setUser } = useUser();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -32,9 +33,7 @@ export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
 
     try {
       const raw = localStorage.getItem(LS_KEY);
-      if (raw) {
-        profiles = JSON.parse(raw);
-      }
+      if (raw) profiles = JSON.parse(raw);
     } catch (e) {
       console.error('Ошибка чтения профилей', e);
     }
@@ -57,24 +56,30 @@ export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
 
     setUser({ name: trimmed });
 
-    onLoginSuccess?.();
+    const favRaw = localStorage.getItem(getFavoritesKey(trimmed));
+    dispatch(setFavorites(favRaw ? JSON.parse(favRaw) : []));
 
-    navigate('/', { replace: true });
+    navigate('/');
   };
 
   return (
     <section className={styles.page}>
-      <h1 className={styles.title}>Вход</h1>
+      <div className={styles.content}>
+        <h1 className={styles.title}>Вход</h1>
+          <Input
+            className={styles.input}
+            placeholder="Ваше имя"
+            value={name}
+            onChange={handleChange}
+          />
 
-      <Input
-        placeholder="Ваше имя"
-        value={name}
-        onChange={handleChange}
-      />
-
-      <Button onClick={handleLoginClick}>
-        Войти в профиль
-      </Button>
+          <Button
+            className={styles.button}
+            onClick={handleLoginClick}
+          >
+            Войти в профиль
+          </Button>
+      </div>
     </section>
   );
 }
