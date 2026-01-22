@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-type UserState = {
+export type UserState = {
   name: string | null;
 };
 
@@ -12,11 +12,14 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setUser(state, action: PayloadAction<string | null>) {
+    login(state, action: PayloadAction<string>) {
       state.name = action.payload;
+    },
+    logout(state) {
+      state.name = null;
     },
   },
 });
 
-export const { setUser } = userSlice.actions;
+export const { login, logout } = userSlice.actions;
 export default userSlice.reducer;

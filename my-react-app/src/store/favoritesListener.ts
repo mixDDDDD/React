@@ -1,24 +1,18 @@
 import { createListenerMiddleware } from '@reduxjs/toolkit';
-import {
-  addFavorite,
-  removeFavorite,
-  clearFavorites,
-  getFavoritesKey,
-} from './favoritesSlice';
-import type { RootState } from './index';
+import { addFavorite, removeFavorite } from './favoritesSlice';
+import { RootState } from './index';
+import { getFavoritesKey } from './favoritesSlice';
 
-const favoritesListener = createListenerMiddleware();
+export const favoritesListener = createListenerMiddleware();
 
 favoritesListener.startListening({
   matcher: (action) =>
-    addFavorite.match(action) ||
-    removeFavorite.match(action) ||
-    clearFavorites.match(action),
+    addFavorite.match(action) || removeFavorite.match(action),
 
-  effect: (_, api) => {
-    const state = api.getState() as RootState;
+  effect: (_, listenerApi) => {
+    const state = listenerApi.getState() as RootState;
+
     const userName = state.user.name;
-
     if (!userName) return;
 
     const key = getFavoritesKey(userName);
@@ -27,5 +21,3 @@ favoritesListener.startListening({
     localStorage.setItem(key, JSON.stringify(favorites));
   },
 });
-
-export default favoritesListener;

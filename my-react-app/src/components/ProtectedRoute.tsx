@@ -1,18 +1,13 @@
-import { Navigate, Outlet, useLocation } from 'react-router-dom';
-import { useUser } from '../context/UserContext';
+import { Navigate, Outlet } from 'react-router-dom';
+import { useAppSelector } from '../store/hooks';
 
 export default function ProtectedRoute() {
-  const { user } = useUser();
-  const location = useLocation();
+  const userName = useAppSelector(
+    (state) => state.user.name
+  );
 
-  if (!user?.name) {
-    return (
-      <Navigate
-        to="/login"
-        replace
-        state={{ from: location }}
-      />
-    );
+  if (!userName) {
+    return <Navigate to="/login" replace />;
   }
 
   return <Outlet />;
